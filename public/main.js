@@ -57,6 +57,13 @@ async function initMap() {
     },
   ];
 
+  const storedMarkers = JSON.parse(localStorage.getItem("markers")) || [];
+
+  // Loop through stored markers and add them to the map
+  storedMarkers.forEach((markerData) => {
+    addMarker(markerData);
+  });
+
   // Loop through the locations array to add markers
   locations.forEach((location) => {
     addMarker(location);
@@ -106,3 +113,9 @@ window.addMarker = function (location) {
     bounds.extend(marker.getPosition()); // Extend bounds to include the marker position
   }
 };
+
+document.getElementById("clear-markers").addEventListener("click", () => {
+  localStorage.removeItem("markers");
+  // Optionally, refresh the map
+  initMap();
+});

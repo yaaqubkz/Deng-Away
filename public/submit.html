@@ -5,20 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mosquito Watch Submission</title>
     <link rel="stylesheet" href="styles.css" />
-    <script
-      async
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkipg3DXs3yi-c1GOSzyxS0twYXaRJr3I&libraries=places&callback=initMap"
-    ></script>
     <script src="main.js"></script>
     <script>
       let autocomplete;
 
-      // Initialize the Autocomplete functionality
       function initMap() {
         const input = document.getElementById("location-input");
         autocomplete = new google.maps.places.Autocomplete(input, {
           types: ["geocode"],
-          componentRestrictions: { country: "us" },
         });
       }
 
@@ -75,17 +69,38 @@
             imageUrlResponse,
           ] = responseText.split(","); // Example split
 
-          window.addMarker({
+          console.log([
+            locationNameResponse,
+            latResponse,
+            lngResponse,
+            imageUrlResponse,
+          ]);
+
+          const markerData = {
             locationName: locationNameResponse || "Unknown",
             lat: parseFloat(latResponse),
             lng: parseFloat(lngResponse),
             address: location,
-            imageUrl: imageUrlResponse || null, // Set to null if imageUrl is undefined
-          });
+            imageUrl: imageUrlResponse || null,
+          };
+
+          saveMarkerData(markerData);
+
+          window.addMarker(markerData);
         } catch (error) {
           console.error("Error during fetch:", error);
           alert("An unexpected error occurred. Please try again.");
         }
+      }
+      function saveMarkerData(markerData) {
+        // Get existing markers from local storage
+        const markers = JSON.parse(localStorage.getItem("markers")) || [];
+
+        // Add the new marker data
+        markers.push(markerData);
+
+        // Save back to local storage
+        localStorage.setItem("markers", JSON.stringify(markers));
       }
     </script>
   </head>
@@ -173,4 +188,8 @@
       }
     </style>
   </body>
+  <script
+    async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkipg3DXs3yi-c1GOSzyxS0twYXaRJr3I&libraries=places&callback=initMap"
+  ></script>
 </html>
