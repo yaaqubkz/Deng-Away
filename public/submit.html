@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mosquito Watch Submission</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      async
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkipg3DXs3yi-c1GOSzyxS0twYXaRJr3I&libraries=places&callback=initMap"
+    ></script>
+    <script src="main.js"></script>
+    <script>
+      let autocomplete;
+
+      // Initialize the Autocomplete functionality
+      function initMap() {
+        const input = document.getElementById("location-input");
+        autocomplete = new google.maps.places.Autocomplete(input, {
+          types: ["geocode"],
+          componentRestrictions: { country: "us" },
+        });
+      }
+
+      async function handleSubmit(event) {
+        event.preventDefault();
+
+        const place = autocomplete.getPlace();
+        if (!place || !place.geometry) {
+          alert("Please select a valid location from the dropdown.");
+          return;
+        }
+
+        const location = place.formatted_address;
+        const locationName = document.getElementById("location-name").value;
+        const imageFile = document.getElementById("image-file").files[0];
+
+        const lat = place.geometry.location.lat(); // Get latitude
+        const lng = place.geometry.location.lng(); // Get longitude
+
+        const formData = new FormData();
+
+        // Append the image only if it exists
+        if (imageFile) {
+          formData.append("image", imageFile);
+        }
+
+        formData.append("location", location);
+        formData.append("locationName", locationName);
+        formData.append("lat", lat);
+        formData.append("lng", lng);
+
+        try {
+          const response = await fetch("/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          console.log("Response status:", response.status);
+          const responseText = await response.text(); // Get response as plain text
+
+          // Check if the response is not OK
+          if (!response.ok) {
+            console.error("Error response:", responseText);
+            alert("Submission failed: " + responseText);
+            return;
+          }
+
+          alert("Submission successful! Response: " + responseText);
+
+          const [
+            locationNameResponse,
+            latResponse,
+            lngResponse,
+            imageUrlResponse,
+          ] = responseText.split(","); // Example split
+
+          window.addMarker({
+            locationName: locationNameResponse || "Unknown",
+            lat: parseFloat(latResponse),
+            lng: parseFloat(lngResponse),
+            address: location,
+            imageUrl: imageUrlResponse || null, // Set to null if imageUrl is undefined
+          });
+        } catch (error) {
+          console.error("Error during fetch:", error);
+          alert("An unexpected error occurred. Please try again.");
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <nav>
+      <div class="logo">
+        <a href="index.html"
+          ><img src="logo.png" alt="Logo" class="logo-img"
+        /></a>
+        <a href="index.html"
+          ><img src="Line 2.png" alt="Logo" class="logo-img"
+        /></a>
+      </div>
+      <ul>
+        <div class="submitButton">
+          <li><a href="submit.html">Submit</a></li>
+        </div>
+        <div class="otherButtons">
+          <li><a href="#">Login</a></li>
+          <li><a href="index.html">Map</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </div>
+      </ul>
+    </nav>
+
+    <div class="form-container">
+      <h2>Submit a Report!</h2>
+      <form onsubmit="handleSubmit(event)">
+        <label for="location-input">Location:</label>
+        <input
+          type="text"
+          id="location-input"
+          required
+          placeholder="Enter a location"
+        />
+
+        <label for="location-name">Location Name (optional):</label>
+        <input
+          type="text"
+          id="location-name"
+          placeholder="Enter a name for this location"
+        />
+
+        <label for="image-file">Select Image (optional):</label>
+        <input type="file" id="image-file" accept="image/*" />
+        <!-- Removed 'required' -->
+
+        <button type="submit">Submit</button>
+      </form>
+      <div id="success-message"></div>
+    </div>
+
+    <style>
+      /* Include your existing styles for form and page layout */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      .form-container {
+        padding: 20px;
+        max-width: 600px;
+        margin: 20px auto;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+      }
+
+      .form-container h2 {
+        text-align: center;
+      }
+
+      .form-container form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-container form input,
+      .form-container form button {
+        margin-bottom: 10px;
+        padding: 10px;
+        font-size: 16px;
+      }
+    </style>
+  </body>
+</html>
