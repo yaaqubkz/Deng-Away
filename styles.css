@@ -1,0 +1,122 @@
+/* Basic styling for the body */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Navbar styling */
+nav {
+  background-color: #834040;
+  display: flex;
+  align-items: center;
+  padding: 4px 20px;
+  color: white;
+}
+
+nav .logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+nav ul {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 730px;
+}
+
+nav ul .submitButton {
+  background-color: #562525;
+  padding: 8px 20px;
+}
+
+nav ul .otherButtons {
+  display: flex;
+  padding-top: 8px;
+  gap: 60px;
+}
+
+nav ul li {
+  display: inline;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 22px;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
+}
+
+/* Form container styling */
+.form-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-container h2 {
+  text-align: center;
+}
+
+.form-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-container form input,
+.form-container form button {
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+#success-message {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Set height for html and body */
+html,
+body {
+  height: 100%;
+}
+
+/* Adjust the body's display property */
+body {
+  display: block;
+  position: relative;
+}
+
+/* Adjusted google-map styles */
+#google-map {
+  border: 1px solid #ccc;
+  position: absolute; /* Keep the position absolute */
+  width: 1250px; /* Set the width to 100% to take the full width of the screen */
+  height: 749px; /* Height remains as is */
+  left: 0; /* Position to the left */
+  bottom: 0; /* Position to the bottom */
+  z-index: 1; /* Optional: Set a lower z-index if needed */
+}
+
+/* Additional styles */
+.water-content * {
+  font-family: "uniform", sans-serif;
+}
+
+.feh-content h3 {
+  font-weight: 500;
+  margin-bottom: 10px;
+  line-height: 10px;
+}
+
+.logo img {
+  height: 50px; /* Adjust based on the size of your logo */
+  width: auto;
+}
+.logo a {
+  text-decoration: none;
+}

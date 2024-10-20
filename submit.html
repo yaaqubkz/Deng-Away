@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Submit Image - Deng-Away</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Shared CSS for navbar -->
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav>
+      <div class="logo">
+        <a href="index.html">
+            <img src="logo.png" alt="Logo" class="logo-img" />
+        </a>
+        <a href="index.html">
+            <img src="Line 2.png" alt="Logo" class="logo-img" />
+        </a>
+      </div>
+      <ul>
+        <div class="submitButton">
+          <li><a href="submit.html">Submit </a></li>
+        </div>
+        <div class="otherButtons"">
+          <li><a href="#">Login</a></li>
+          <li><a href="index.html">Map</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </div>
+      </ul>
+    </nav>
+
+    <!-- Image Submission Form -->
+    <div class="form-container">
+      <h2>Submit an Image with Location</h2>
+      <form id="image-upload-form">
+        <input type="file" id="image-file" accept="image/*" required />
+        <input
+          type="text"
+          id="location"
+          placeholder="Enter location"
+          required
+        />
+        <button type="submit">Submit Image</button>
+      </form>
+      <div id="success-message" style="display: none">
+        <h3>Success! <a href="index.html">View Live Map</a></h3>
+      </div>
+    </div>
+
+    <!-- Google Places Autocomplete API -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkipg3DXs3yi-c1GOSzyxS0twYXaRJr3I&libraries=places"
+      defer
+    ></script>
+
+    <script>
+      document
+        .getElementById("image-upload-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const successMessage = document.getElementById("success-message");
+          successMessage.style.display = "block";
+          // Handle form submission and geocode data processing
+          handleImageSubmission();
+        });
+
+      function handleImageSubmission() {
+        // Handle the image submission and geocoding logic here
+        // For now, this is a mock function to display the success message
+      }
+    </script>
+  </body>
+</html>
